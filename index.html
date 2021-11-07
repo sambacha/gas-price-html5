@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html class="no-js" lang="">
+<!-- 
+@summary W3C Validated Ethereum Gas Pricing HTML Page
+@version 2021.10
+@license MIT
+-->
+  <head>
+    <meta charset="utf-8" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <meta property="og:title" content="" />
+    <meta property="og:type" content="" />
+    <meta property="og:url" content="" />
+    <meta property="og:image" content="" />
+
+    <!-- @dev reload the page every 14 seconds -->
+    <meta http-equiv="refresh" content="14" />
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <title>TxPrice.com - HTML5</title>
+
+    <script>
+      "use strict"
+    
+      /** @settings  */
+      var settings = {
+        async: true,
+        crossDomain: true,
+        url: "https://api.txprice.com",
+        method: "GET",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+      }
+
+        /** @returns network.response  */
+      $.ajax(settings).done(function (response) {
+        console.log(response)
+        var content = response.maxPrice
+        $("#maxPrice").append(content)
+        console.log("currentBlockNumber: " + response.currentBlockNumber)
+        var blockNumber = response.blockPrices[0].blockNumber
+        $("#blockNumber").append(blockNumber)
+        var baseFeePerGas = response.blockPrices[0].baseFeePerGas
+        $("#baseFeePerGas").append(baseFeePerGas)
+
+        var msSinceLastBlock = response.msSinceLastBlock
+        console.log("msSinceLastBlock: " + response.msSinceLastBlock)
+
+        /** @note  */
+        /** @returns 99.response  */
+        var content = response.blockPrices[0].estimatedPrices[0].maxFeePerGas
+        $("#maxFeePerGas").append(content)
+        console.log(
+          "maxFeePerGas: " +
+            response.blockPrices[0].estimatedPrices[0].maxFeePerGas
+        )
+        var maxPriorityFeePerGas =
+          response.blockPrices[0].estimatedPrices[0].maxPriorityFeePerGas
+        $("#maxPriorityFeePerGas").append(maxPriorityFeePerGas)
+        console.log(
+          "maxPriorityFeePerGas: " +
+            response.blockPrices[0].estimatedPrices[0].maxPriorityFeePerGas
+        )
+
+        /** @note  */
+        /** @returns 95.response  */
+        var content = response.blockPrices[0].estimatedPrices[2].maxFeePerGas
+        $("#maxFeePerGas_95").append(content)
+        console.log(
+          "maxFeePerGas_95: " +
+            response.blockPrices[0].estimatedPrices[2].maxFeePerGas
+        )
+        var maxPriorityFeePerGas_95 =
+          response.blockPrices[0].estimatedPrices[2].maxPriorityFeePerGas
+        $("#maxPriorityFeePerGas_95").append(maxPriorityFeePerGas)
+        console.log(
+          "maxPriorityFeePerGas_95: " +
+            response.blockPrices[0].estimatedPrices[2].maxPriorityFeePerGas
+        )
+      })
+    </script>
+  </head>
+
+  <body onload="change_time()">
+    <h1>TxPrice.com Ethereum Gas Pricing</h1>
+
+    <div id="time">Latest Timestamp: </div>
+
+    <div id="maxPrice">Latest maxPrice: </div>
+    <div id="maxPriorityFeePerGas">Current maxPriorityFeePerGas: </div>
+
+    <h3>99% Confidence for Block Inclusion within 5-8 Blocks</h3>
+    <div id="maxFeePerGas">Latest maxFeePerGas: </div>
+    <div id="blockNumber">Current blockNumber: </div>
+
+    <h3>95% Confidence for Block Inclusion within 5-8 Blocks</h3>
+    <div id="maxFeePerGas_95">Latest maxFeePerGas: </div>
+    <div id="maxPriorityFeePerGas_95">Current maxPriorityFeePerGas: </div>
+
+    <script type="text/javascript">
+      "use strict"
+      function change_time() {
+        var d = new Date()
+        var curr_hour = d.getHours()
+        var curr_min = d.getMinutes()
+        var curr_sec = d.getSeconds()
+        if (curr_hour > 12) curr_hour = curr_hour - 12
+        document.getElementById("time").innerHTML =
+          curr_hour + ":" + curr_min + ":" + curr_sec
+      }
+      change_time()
+    </script>
+  </body>
+</html>
